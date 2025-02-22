@@ -1,92 +1,38 @@
 import streamlit as st
-import pandas as pd
-import os
-from io import BytesIO
 
-st.set_page_config(page_title="Data Sweeper", layout="wide")
+st.set_page_config(page_title= "growth mindset project", project_icon="★")
 
-# custom css
-st.markdown(
-    """
-    <style>
-    .stApp {
-        background-color: brown;
-        color: white;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+st.title("Growth Mindset Challange")
 
-# title and description
-st.title("Datasweeper Sterling Integrator By M.Mudasir Chandio")
-st.write("Transform your files between CSV and Excel formats with built-in data cleaning and visualization. Creating the project for Quarter 3.")
+st.header("🚀 Welcome to your growth journey")
+st.write("Embrace challenges, learn from mistakes, and unlock your full potential. This AI-powered app help you build a growth mindset with reflection, challenges, and achievements! ☀️")
 
-# file uploader
-upload_files = st.file_uploader("Upload your files (accepts CSV or Excel):", type=["csv", "xlsx"], accept_multiple_files=True)
+st.header("💡 Today's Growth Mindset Quote")
+st.write('"Success is not final, failure is not fatal: it is the courage to continue that counts."- Winston Churchill')
 
-if upload_files:
-    for file in upload_files:
-        file_ext = os.path.splitext(file.name)[-1].lower()
+st.header("🔧 What's your challenge today?")
+user_input = st.text_input("Describe a challenge you're facing:")
 
-        if file_ext == ".csv":
-            df = pd.read_csv(file)
-        elif file_ext == ".xlsx":
-            df = pd.read_excel(file)
-        else:
-            st.error(f"Unsupported file type: {file_ext}")
-            continue
+if user_input:
+    st.success(f"💪 you are facing: {user_input}. Keep pushing forward towards to your goal! 🚀")
+else:
+    st.warning("Tell us your challenge to get started!")
 
-        # file details
-        st.write("Preview the head of the DataFrame")
-        st.dataframe(df.head())
+st.header("Reflect on Your Learning")
+reflection = st.text_area("Write your reflections here: ")
+if reflection:
+    st.success(f"✨ Great Insight! Your reflection: {reflection}")
+else:
+    st.info("Reflection on past exprience help you grow! Share your difficulties ")
 
-        # data cleaning options
-        st.subheader("Data Cleaning Options")
-        if st.checkbox(f"Clean data for {file.name}"):
-            col1, col2 = st.columns(2)
+st.header("🏆 Celebrate Your Wins!")
+achievement = st.text_input("Share something you've recently accomplished:")
 
-            with col1:
-                if st.button(f"Remove duplicates from the file: {file.name}"):
-                    df.drop_duplicates(inplace=True)
-                    st.write("Duplicates removed!")
-            with col2:
-                if st.button(f"Fill missing values for {file.name}"):
-                    numeric_cols = df.select_dtypes(include=['number']).columns
-                    df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].mean())
-                    st.write("✅ Missing values have been filled!")
+if achievement:
+    st.success(f"🌠 Amazing! You Achieved: {achievement}")
+else:
+    st.info("Big or small, every achievement counts! Share one now 😍")
 
-        st.subheader("🎯 Select Columns to Keep")
-        columns = st.multiselect(f"Choose columns for {file.name}", df.columns, default=df.columns)
-        df = df[columns]
-
-        # data visualization
-        st.subheader("📊 Data Visualization")
-        if st.checkbox(f"Show visualization for {file.name}"):
-            st.bar_chart(df.select_dtypes(include='number').iloc[:, :2])
-
-        # conversion options
-        st.subheader("🔄 Conversion Options")
-        conversion_type = st.radio(f"Convert {file.name} to:", ["CSV", "Excel"], key=file.name)
-        if st.button(f"Convert {file.name}"):
-            buffer = BytesIO()
-            if conversion_type == "CSV":
-                df.to_csv(buffer, index=False)
-                file_name = file.name.replace(file_ext, ".csv")
-                mime_type = "text/csv"
-
-            elif conversion_type == "Excel":
-                df.to_excel(buffer, index=False)
-                file_name = file.name.replace(file_ext, ".xlsx")
-                mime_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-
-            buffer.seek(0)
-
-            st.download_button(
-                label=f"Download {file.name} as {conversion_type}",
-                data=buffer,
-                file_name=file_name,
-                mime=mime_type
-            )
-
-    st.success("🎉 All files processed successfully!")
+st.write("- - -")
+st.write("🚀 Keep believing in yourself. Growth is a journey, not a destination! 🌟")
+st.write("**⛔ Created By M.Mudasir Chandio**")
